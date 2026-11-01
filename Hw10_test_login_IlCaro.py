@@ -3,12 +3,14 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 
 URL = "https://icarro-v1.netlify.app/login"
-EXPECTED_URL = "https://icarro-v1.netlify.app"
+
 
 @pytest.fixture
 def driver():
     driver = webdriver.Chrome()
+    driver.implicitly_wait(5)
     driver.get(URL)
+
 
     yield driver
 
@@ -24,13 +26,16 @@ def test_login(driver):
 
 
 def test_lig_in_button_is_displayed(driver):
-    button = driver.find_element(By.XPATH, "//button[contains(text(),'Y’alla!')]")
+    button = driver.find_element(By.XPATH, "//button[contains(text(), 'alla')]")
     assert button.is_displayed()
 
 def test_login_success(driver):
-    driver.find_element(By.CSS_SELECTOR, "input[name='username']").send_keys("lgspread197@gmail.com")
-    driver.find_element(By.CSS_SELECTOR, "input[name='password']").send_keys("lgspread197")
+    driver.find_element(By.CSS_SELECTOR, "input[name='username']").send_keys("lgspread19744444@gmail.com")
+    driver.find_element(By.CSS_SELECTOR, "input[name='password']").send_keys("Asdfg1234!")
 
-    driver.find_element(By.XPATH,"//button[contains(text(),'Y’alla!')]").click()
+    driver.find_element(By.XPATH, "//button[contains(text(), 'alla')]").click()
 
-    assert driver.current_url == EXPECTED_URL
+    assert driver.find_element(By.XPATH,"//h3[contains(text(),'You are logged in success')]").is_displayed()
+
+
+
